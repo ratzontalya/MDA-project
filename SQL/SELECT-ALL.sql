@@ -6,7 +6,6 @@ SELECT * FROM Paramedic;
 SELECT * FROM Ambulance;
 SELECT * FROM CallHelp;
 SELECT * FROM Team;
-SELECT * FROM TakeAmbulance;
+SELECT * FROM SendTeam;
 SELECT * FROM ParticipantParamedic;
 SELECT * FROM ParticipantVolunteer;
-SELECT * FROM Person;
