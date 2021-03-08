@@ -20,3 +20,29 @@
     All ambulances sent by a dispatcher
     that is also a paramedic with at least 20 years of experience
 */
+
+/*
+	Give me all the teams with the number of 
+    the paramedics and volunteers
+	that participated in it.
+    TeamId, numVolunteers, numParamedics
+*/
+
+/*
+	Give me all the calls with the number of 
+    the paramedics and volunteers
+	that participated in this event.
+    CallId, numVolunteers, numParamedics
+*/
+
+/*
+	Give me all the ambulances that where used for 
+    more than 50 times.
+*/
+
+/*
+	I want the EXCELLENT paramedic which participated
+    in more than 20 calls or
+    participated in "big events" which needed more 
+    than 2 teams
+*/
