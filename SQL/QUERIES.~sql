@@ -40,13 +40,6 @@ WHERE CallId IN (SELECT CallId
                  NATURAL JOIN PARAMEDIC 
                  WHERE YearsOfExperience > 10);
 
-SELECT CallId, CallDate, DispatcherId
-FROM CALLHELP 
-NATURAL JOIN SENDTEAM
-NATURAL JOIN PARTICIPANTPARAMEDIC
-NATURAL JOIN PARAMEDIC 
-WHERE YearsOfExperience > 10;
-
 /*
     All ambulances sent by a dispatcher
     that is also a paramedic with at least 20 years of experience
