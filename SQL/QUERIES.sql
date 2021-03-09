@@ -2,26 +2,61 @@
 
 /*
     All the ambulances that each of the drivers 
-    who are also volunteers have driven in the last year
+    are also volunteers have driven in the last year
 */
+
+SELECT *
+FROM AMBULANCE
+WHERE AmbulanceId NOT IN (SELECT AmbulanceId
+                      FROM CALLHELP NATURAL JOIN TEAM NATURAL JOIN SENDTEAM
+                      WHERE CallDate > '01-JAN-2020' AND DriverId NOT IN(SELECT DriverId
+                                            FROM DRIVER, VOLUNTEER
+                                            WHERE DriverId = VolunteerId));
+
 
 
 /*
     All dispatchers whose number of calls received
     in the past year is at least 100
 */
+SELECT *
+FROM DISPATCHER
+WHERE DispatcherId IN (SELECT DispatcherId 
+                      FROM CALLHELP
+                      GROUP BY DispatcherId
+                      HAVING COUNT(DISTINCT DispatcherId) > 99);
 
-
+  
 /*
     All calls that sent to them at least one paramedic
     with more than 10 years of experience
 */
+SELECT *
+FROM CALLHELP
+WHERE CallId IN (SELECT CallId
+                 FROM CALLHELP 
+                 NATURAL JOIN SENDTEAM
+                 NATURAL JOIN PARTICIPANTPARAMEDIC
+                 NATURAL JOIN PARAMEDIC 
+                 WHERE YearsOfExperience > 10);
 
+SELECT CallId, CallDate, DispatcherId
+FROM CALLHELP 
+NATURAL JOIN SENDTEAM
+NATURAL JOIN PARTICIPANTPARAMEDIC
+NATURAL JOIN PARAMEDIC 
+WHERE YearsOfExperience > 10;
 
 /*
     All ambulances sent by a dispatcher
     that is also a paramedic with at least 20 years of experience
 */
+SELECT AmbulanceId
+FROM CALLHELP 
+NATURAL JOIN SENDTEAM
+NATURAL JOIN TEAM
+NATURAL JOIN PARAMEDIC 
+WHERE ParamedicId = DispatcherId AND YearsOfExperience > 20
 
 /*
 	Give me all the teams with the number of 
