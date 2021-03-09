@@ -1,5 +1,3 @@
-/* SELECT */
-
 /*
     All the ambulances that each of the drivers 
     are also volunteers have driven in the last year
@@ -14,11 +12,11 @@ WHERE AmbulanceId NOT IN (SELECT AmbulanceId
                                             WHERE DriverId = VolunteerId));
 
 
-
 /*
     All dispatchers whose number of calls received
     in the past year is at least 100
 */
+
 SELECT *
 FROM DISPATCHER
 WHERE DispatcherId IN (SELECT DispatcherId 
@@ -31,6 +29,7 @@ WHERE DispatcherId IN (SELECT DispatcherId
     All calls that sent to them at least one paramedic
     with more than 10 years of experience
 */
+
 SELECT *
 FROM CALLHELP
 WHERE CallId IN (SELECT CallId
@@ -51,6 +50,7 @@ WHERE YearsOfExperience > 10;
     All ambulances sent by a dispatcher
     that is also a paramedic with at least 20 years of experience
 */
+
 SELECT AmbulanceId
 FROM CALLHELP 
 NATURAL JOIN SENDTEAM
