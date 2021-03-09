@@ -30,6 +30,10 @@
     TeamId, numVolunteers, numParamedics
 */
 
+SELECT TEAMID, COUNT(PARAMEDICID), COUNT(VOLUNTEERID)
+FROM TEAM NATURAL JOIN PARTICIPANTPARAMEDIC NATURAL JOIN PARTICIPANTVOLUNTEER
+GROUP BY TEAMID;
+
 /*
 	Give me all the calls with the number of 
     the paramedics and volunteers
