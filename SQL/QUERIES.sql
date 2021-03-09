@@ -39,13 +39,6 @@ WHERE CallId IN (SELECT CallId
                  NATURAL JOIN PARAMEDIC 
                  WHERE YearsOfExperience > 10);
 
-SELECT CallId, CallDate, DispatcherId
-FROM CALLHELP 
-NATURAL JOIN SENDTEAM
-NATURAL JOIN PARTICIPANTPARAMEDIC
-NATURAL JOIN PARAMEDIC 
-WHERE YearsOfExperience > 10;
-
 /*
     All ambulances sent by a dispatcher
     that is also a paramedic with at least 20 years of experience
@@ -62,14 +55,20 @@ WHERE ParamedicId = DispatcherId AND YearsOfExperience > 20
 /*
     Delete the oldest dispatcher
 */
-
+DELETE FROM DISPATCHER 
+JOIN PERSON 
+ON DISPATCHER.DispatcherId = PERSON.PersonId 
+WHERE BirthDate IN (SELECT MAX(BirthDate)
+                    FROM PERSON)
 
 /*
-    Update the max YEARSOFEXPERIENCE to be 50:
-    If there is paramedic with YEARSOFEXPERIENCE grather than 50 - 
+    Update the max YEARSOFEXPERIENCE to be 40:
+    If there is paramedic with YEARSOFEXPERIENCE grather than 40 - 
     update it to be 50
 */
-
+UPDATE PARAMEDIC
+SET YearsOfExperience = 40
+WHERE YearsOfExperience > 40;
 
 /*
 	Give me all the teams with the number of 
