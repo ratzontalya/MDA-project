@@ -1,4 +1,5 @@
 /*
+    1
     All the ambulances that each of the drivers 
     are also volunteers have driven in the last year
 */
@@ -13,8 +14,9 @@ WHERE AmbulanceId NOT IN (SELECT AmbulanceId
 
 
 /*
+    2
     All dispatchers whose number of calls received
-    in the past year is at least 100
+    is at least 10
 */
 
 SELECT *
@@ -28,6 +30,7 @@ ORDER BY DispatcherId;
 
   
 /*
+    3
     All calls that sent to them at least one paramedic
     with more than 10 years of experience
 */
@@ -42,6 +45,7 @@ WHERE CallId IN (SELECT CallId
                  WHERE YearsOfExperience > 10);
 
 /*
+    4
     dispatcherFullName, num of calls, average of teams sent for every call.
 */
 SELECT FirstName, LastName, SUM_UP, AVERAGE
@@ -51,26 +55,11 @@ FROM (SELECT DispatcherId,COUNT(DISTINCT(CallId)) AS SUM_UP,
       GROUP BY DispatcherId
       ORDER BY DispatcherId) JOIN PERSON ON (PersonId=DispatcherId)
 
-/*
-    Delete the oldest dispatcher
-*/
-DELETE FROM DISPATCHER
-WHERE DispatcherId IN (SELECT DispatcherId
-                       FROM DISPATCHER JOIN PERSON ON (DispatcherId = PersonId) 
-                       WHERE BirthDate IN (SELECT MIN(BirthDate)
-                                           FROM DISPATCHER JOIN PERSON ON PersonId = DispatcherId));
-                                           
-/*
-    Update the max YEARSOFEXPERIENCE to be 40:
-    If there is paramedic with YEARSOFEXPERIENCE grather than 40 - 
-    update it to be 40
-*/
-UPDATE PARAMEDIC
-SET YearsOfExperience = 40
-WHERE YearsOfExperience > 40;
+                                       
 
 /*
-	Give me all the teams with the number of 
+	5
+    Give me all the teams with the number of 
     the paramedics and volunteers
 	that participated in it.
     TeamId, numVolunteers, numParamedics
@@ -83,27 +72,9 @@ NATURAL JOIN PARTICIPANTPARAMEDIC
 NATURAL JOIN PARTICIPANTVOLUNTEER
 GROUP BY CallId;
 
-/*
-	Give me all the calls with the number of 
-    the paramedics and volunteers
-	that participated in this event.
-    CallId, numVolunteers, numParamedics
-*/
-
-SELECT people,drivers/people*100,paramedics/people*100,dispatchers/people*100,volunteers/people*100
-FROM (SELECT COUNT(DISTINCT DriverId) AS drivers
-     FROM DRIVER), 
-     (SELECT COUNT(DISTINCT ParamedicId) AS paramedics
-     FROM PARAMEDIC),
-     (SELECT COUNT(DISTINCT DispatcherId) AS dispatchers
-     FROM DISPATCHER),
-     (SELECT COUNT(DISTINCT VolunteerId) AS volunteers
-     FROM VOLUNTEER),
-     (SELECT COUNT(DISTINCT PersonId) AS people
-     FROM PERSON)
-/*
-	Give me all the ambulances that where used for 
-    more than 3 times in average.
+	5
+    Give me all the ambulances, times of use, first use date, last use date, that where used for 
+    more than 5 times, and if the first use was after 1.1.1970
 */
 
 SELECT AmbulanceId,counter,FirstUse,LatestUse
@@ -114,7 +85,8 @@ FROM (SELECT AmbulanceId,COUNT(*) AS counter, MIN(CallDate) AS FirstUse, MAX(Cal
       ORDER BY AmbulanceId) 
 WHERE FirstUse > '01-JAN-1970'
 /*
-	I want the EXCELLENT paramedic which participated
+	6
+    I want the EXCELLENT paramedic which participated
     in more than 30 calls or
     participated in "big events" which needed more 
     than 5 teams
@@ -134,8 +106,8 @@ WHERE CallId IN (SELECT CallId
 
 
 /*
-   It is now the end of the year, so we need to add
-   1 year of experience to every paramedic if he worked in this year atleast 3 times
+   7
+   Return all the paramedics' id which participated in more than 5 calls.
 */
 SELECT ParamedicId
 FROM ParticipantParamedic NATURAL JOIN SENDTEAM NATURAL JOIN CALLHELP
@@ -143,6 +115,50 @@ WHERE CallDate > '01-JAN-2000'
 GROUP BY ParamedicId
 HAVING COUNT(DISTINCT(CallId)) > 5
 ORDER BY ParamedicId;
+
+/*
+	8
+    Give me all the calls with the number of 
+    the paramedics and volunteers
+	that participated in this event.
+    CallId, numVolunteers, numParamedics
+*/
+
+SELECT people,drivers/people*100,paramedics/people*100,dispatchers/people*100,volunteers/people*100
+FROM (SELECT COUNT(DISTINCT DriverId) AS drivers
+     FROM DRIVER), 
+     (SELECT COUNT(DISTINCT ParamedicId) AS paramedics
+     FROM PARAMEDIC),
+     (SELECT COUNT(DISTINCT DispatcherId) AS dispatchers
+     FROM DISPATCHER),
+     (SELECT COUNT(DISTINCT VolunteerId) AS volunteers
+     FROM VOLUNTEER),
+     (SELECT COUNT(DISTINCT PersonId) AS people
+     FROM PERSON)
+/*
+
+/* UPDATE */
+
+/*
+    Update the max YEARSOFEXPERIENCE to be 40:
+    If there is paramedic with YEARSOFEXPERIENCE grather than 40 - 
+    update it to be 40
+*/
+UPDATE PARAMEDIC
+SET YearsOfExperience = 40
+WHERE YearsOfExperience > 40;
+
+/*
+   When 235298895 was in vacation, 190928615 replaced him and worked with his computer.
+   Update the database.
+*/
+
+UPDATE CALLHELP
+SET DispatcherId = 190928615
+WHERE DispatcherId = 235298895;
+
+/* DELETE */
+
 /*
    Because of a new law, people which are older than
    75 years can't be drive ambulance,
@@ -156,12 +172,12 @@ WHERE DRIVERID IN (
     WHERE BIRTHDATE < TO_DATE('01/01/1946', 'dd-mm-yyyy')
     );
     
-    /*
-   Because of a new law, people which are older than
-   75 years can't be drive ambulance,
-   so delete all of them.
+/*
+     Delete the oldest dispatcher
 */
-
-UPDATE CALLHELP
-SET DispatcherId = 190928615
-WHERE DispatcherId = 235298895;
+DELETE FROM DISPATCHER
+WHERE DispatcherId IN (SELECT DispatcherId
+                       FROM DISPATCHER JOIN PERSON ON (DispatcherId = PersonId) 
+                       WHERE BirthDate IN (SELECT MIN(BirthDate)
+                                           FROM DISPATCHER JOIN PERSON ON PersonId = DispatcherId));
+    
