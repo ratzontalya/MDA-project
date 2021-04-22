@@ -1,0 +1,10 @@
+ALTER TABLE PERSON
+      ADD CONSTRAINT check_phone_number
+      CHECK (phone LIKE '0%');
+ALTER TABLE PERSON
+      ADD CONSTRAINT check_birthdate
+      CHECK (75 > DATEDIFF(hour,BirthDate,GETDATE())/8766) ;
+ALTER TABLE PARAMEDIC
+      ADD CONSTRAINT check_experience
+      CHECK (experience > 1);
+      

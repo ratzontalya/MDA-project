@@ -8,5 +8,5 @@ DROP TABLE Dispatcher;
 DROP TABLE Paramedic;
 DROP TABLE Driver;
 DROP TABLE Volunteer;
-DROP TABLE Person1;
+DROP TABLE Person;
 

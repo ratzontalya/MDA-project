@@ -1,4 +1,4 @@
-CREATE TABLE Person
+CREATE TABLE Person1
 (
   PersonId INT NOT NULL,
   FirstName VARCHAR2(100) NOT NULL,

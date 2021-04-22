@@ -5,8 +5,8 @@
 */
 
 SELECT *
-FROM AMBULANCE
-WHERE AmbulanceId NOT IN (SELECT AmbulanceId
+FROM ITEM
+WHERE LOWER(itemName) = 'ambulance' AND itemId NOT IN (SELECT AmbulanceId
                       FROM CALLHELP NATURAL JOIN TEAM NATURAL JOIN SENDTEAM
                       WHERE CallDate > '01-JAN-2020' AND DriverId NOT IN(SELECT DriverId
                                             FROM DRIVER, VOLUNTEER
@@ -58,10 +58,10 @@ FROM (SELECT DispatcherId,COUNT(DISTINCT(CallId)) AS SUM_UP,
                                        
 
 /*
-	5
+  5
     Give me all the teams with the number of 
     the paramedics and volunteers
-	that participated in it.
+  that participated in it.
     TeamId, numVolunteers, numParamedics
 */
 
@@ -72,7 +72,7 @@ NATURAL JOIN PARTICIPANTPARAMEDIC
 NATURAL JOIN PARTICIPANTVOLUNTEER
 GROUP BY CallId;
 /*
-	6
+  6
     Give me all the ambulances, times of use, first use date, last use date, that where used for 
     more than 5 times, and if the first use was after 1.1.1970
 */
@@ -97,11 +97,12 @@ HAVING COUNT(DISTINCT(CallId)) > 5
 ORDER BY ParamedicId;
 /*
 
-	8
+  8
     Give me the precent of volunteers, drivers, paramedics and dispatchers from all the people
 */
 
-SELECT people,drivers/people*100,paramedics/people*100,dispatchers/people*100,volunteers/people*100
+SELECT people,drivers/people*100,paramedics/people*100,dispatchers/people*100,volunteers/people*100, 
+       storekeepers/people*100, donors/people*100
 FROM (SELECT COUNT(DISTINCT DriverId) AS drivers
      FROM DRIVER), 
      (SELECT COUNT(DISTINCT ParamedicId) AS paramedics
@@ -110,6 +111,10 @@ FROM (SELECT COUNT(DISTINCT DriverId) AS drivers
      FROM DISPATCHER),
      (SELECT COUNT(DISTINCT VolunteerId) AS volunteers
      FROM VOLUNTEER),
+     (SELECT COUNT(DISTINCT storekeeperid) AS storekeepers
+     FROM storekeeper),
+     (SELECT COUNT(DISTINCT donorid) AS donors
+     FROM donor),
      (SELECT COUNT(DISTINCT PersonId) AS people
      FROM PERSON);
 /*
@@ -166,36 +171,90 @@ WHERE DispatcherId IN (SELECT DispatcherId
                        WHERE BirthDate IN (SELECT MIN(BirthDate)
                                            FROM DISPATCHER JOIN PERSON ON PersonId = DispatcherId));
  
-/* We did it infront of Hadar*/   
-SELECT EXTRACT(month FROM callDate), count(*)
-FROM CALLHELP
-WHERE CallId IN (SELECT CallId
-                 FROM CALLHELP 
-                 NATURAL JOIN SENDTEAM
-                 NATURAL JOIN PARTICIPANTPARAMEDIC
-                 NATURAL JOIN PARAMEDIC 
-                 WHERE YearsOfExperience > 10)
-GROUP BY EXTRACT(month FROM callDate);
 
-/*******************NOT NEEDED******************/
+/*******TAL & AVITAL*********/
 
-/*
-	6
-    I want the EXCELLENT paramedic which participated
-    in more than 30 calls or
-    participated in "big events" which needed more 
-    than 5 teams
-*/
+--select:
 
-SELECT FIRSTNAME, LASTNAME
-FROM PARTICIPANTPARAMEDIC JOIN PERSON ON (PERSONID = PARAMEDICID)
-GROUP BY PARAMEDICID, FIRSTNAME, LASTNAME
-HAVING COUNT(*) > 30
-UNION
-SELECT FIRSTNAME, LASTNAME
-FROM SENDTEAM NATURAL JOIN PARTICIPANTPARAMEDIC JOIN PERSON ON (PERSONID = PARAMEDICID)
-WHERE CallId IN (SELECT CallId
-                 FROM CALLHELP NATURAL JOIN SENDTEAM
-                 GROUP BY CALLID
-                 HAVING COUNT(TeamId) > 5);
+--query 1
+select ITEMID, ITEMNAME 
+from donateitem NATURAL JOIN item;
+--query 2
+select A.donor_id , A.amount
+from (select donorid as donor_id, count(*) as amount 
+      from donor natural join donation
+       group by DONORID) A 
+order by A.amount;
+     
+--query 3
+select A.warehouseid
+from (select warehouseid, count(*) as amount 
+      from item natural join ordering natural join storekeeper
+      group by warehouseid) A 
+      where A.AMOUNT >= All (select count(*) as amount 
+                             from item natural join ordering natural join storekeeper 
+                             group by warehouseid);
+--query 4
+select itemid, ITEMNAME 
+from item natural join ordering
+group by ORDERDATE, ORDERID, Itemid, ITEMNAME 
+HAVING count(*) >= 1;
 
+--query 5
+select DONORID 
+from donor natural join donation
+group by DONORID
+having max(DONATIONDATE) < (sysdate - 30) 
+order by DONORID;
+
+--query 6
+select ITEMID as item_id 
+from item 
+where orderid IS NULL
+minus 
+select ITEMID as item_id 
+from donateitem;
+
+--query 7
+select S.STOREKEEPERID, P.FIRSTNAME, P.LASTNAME 
+from storekeeper S join person P on S.STOREKEEPERID = P.PERSONID 
+where S.WAREHOUSEID IN (select W.WAREHOUSEID 
+                       from warehouse W 
+                       where W.STOREKEEPERSCAPACITY > 10);
+                       select * from warehouse;
+--query 8
+select DONORID, FIRSTNAME, LASTNAME 
+from donor natural join donation join person P on DONORID = P.PERSONID 
+where DONATIONDATE = (sysdate - 10);
+
+
+--update:
+
+--query 1
+update warehouse W 
+set W.itemsCapacity = W.itemsCapacity * 2, W.storekeeperscapacity = W.storekeeperscapacity + 2 
+where W.ADDRESS = '838 Dennis';
+
+
+--query 2
+update ordering O 
+set O.Shippingprice = 0 
+where O.ORDERID IN (select orderid 
+                   from ordering natural join Item
+                   group by orderid 
+                   having sum(PRICE) >= 200);
+
+
+--delete:
+
+--query 1
+delete storekeeper 
+where EXPERIENCE > 30 and STOREKEEPERID IN (select STOREKEEPERID 
+                                               from storekeeper natural join ordering 
+                                               group by STOREKEEPERID 
+                                               having count (*) >= 10);
+--query 2
+delete donateitem
+where DONATIONID IN (select donationid 
+               from donation 
+               where DONATIONSTATUS = 'Canceled' and DONATIONDATE <= (sysdate-730));

@@ -1,0 +1,15 @@
+drop table donateItem;
+drop table ordering;
+drop table donation;
+drop table donor;
+drop table storekeeper;
+drop table warehouse;
+drop table item;
+DROP TABLE SendTeam;
+DROP TABLE Team;
+DROP TABLE CallHelp;
+DROP TABLE Dispatcher;
+DROP TABLE Paramedic;
+DROP TABLE Driver;
+DROP TABLE Volunteer;
+DROP TABLE Person;
