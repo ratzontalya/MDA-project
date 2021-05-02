@@ -75,9 +75,10 @@ ADD CONSTRAINT fk_item3
 move ambulance table to item
 */  
 INSERT INTO ITEM
-SELECT ambulanceid,'Ambulance',0, 'Yad2',0,NULL,NULL
+SELECT ambulanceid + 13,'Ambulance',0, 'UNKNOWN',0,NULL,NULL
 FROM AMBULANCE
-WHERE ambulanceid NOT IN (SELECT itemid FROM ITEM);  
+WHERE ambulanceid + 13 NOT IN (SELECT itemid FROM ITEM);  
+
 /*
 move person1 data to the table person
 */ 
@@ -112,6 +113,10 @@ changing the foreign key that is inside of team - to item instead of ambulance
 */
 alter table TEAM
   drop constraint SYS_C0015737;
+  
+UPDATE TEAM
+SET AMBULANCEID = AMBULANCEID + 13;
+
 alter table TEAM
   add foreign key (AMBULANCEID)
   references item (ITEMID) on delete cascade;

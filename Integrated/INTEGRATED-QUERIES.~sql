@@ -258,14 +258,3 @@ delete donateitem
 where DONATIONID IN (select donationid 
                from donation 
                where DONATIONSTATUS = 'Canceled' and DONATIONDATE <= (sysdate-730));
-               SELECT * FROM DONATION;
-delete donation D 
-where D.DONATIONSTATUS = 'Canceled' and D.DONATIONDATE <= (sysdate-730);
-
-SELECT EXTRACT(MONTH FROM donationDate) as itsmonth, count(*) as amount
-from donation D
-group by EXTRACT(MONTH FROM donationDate)
-having count(*) >= ALL (
-                   SELECT count(*) as amount
-                   from donation D
-                   group by EXTRACT(MONTH FROM donationDate));
