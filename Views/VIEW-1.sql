@@ -43,6 +43,18 @@ FROM CALLS
 GROUP BY EXTRACT(MONTH FROM CALLDATE)
 ORDER BY EXTRACT(MONTH FROM CALLDATE);
 
-                      
+/*
+UPDATE
+לא יכול לעדכן את השם של הפרמדיק כי זה עמודה משתי עמודות
+*/
+UPDATE CALLS
+SET DISPATCHER_NAME = 'MOSHE COHEN'
+WHERE DISPATCHER_NAME = 'Bruce Wainwright';
+/*
+DELETE
+לא ניתן למחוק שורה בויו זה מפני שהוא לא יודע מה הוא אמור למחוק.
+*/  
+DELETE FROM CALLS
+WHERE DISPATCHER_NAME = 'Bruce Wainwright';                 
 /*DROP*/
 DROP VIEW CALLS;

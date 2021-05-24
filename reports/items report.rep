@@ -1,0 +1,211 @@
+PL/SQL Developer Report
+
+[SQL]
+select *
+from (SELECT  ITEMID, price,ORDERID, 'FALSE' AS DONATED, WAREHOUSEID, STOREKEEPERID AS StorekeeperOrDonor
+FROM ITEM
+NATURAL JOIN ORDERING
+NATURAL JOIN WAREHOUSE
+NATURAL JOIN STOREKEEPER
+UNION
+SELECT ITEMID, price,DONATIONID, 'TRUE' AS DONATED, NULL, DONORID
+FROM ITEM
+NATURAL JOIN DONATEITEM
+NATURAL JOIN DONATION
+UNION
+SELECT ITEMID, price, NULL, 'UNKNOWN', NULL,NULL
+FROM ITEM
+WHERE ORDERID IS NULL AND ITEMID NOT IN (SELECT ITEMID FROM DONATEITEM))
+order by donated;
+
+[Options]
+Connect=False
+Username=
+Password=2219
+Database=
+ConnectAs=
+LockMode=0
+LockedPassword=2382
+BkgColor=-16777211
+BkgImage=
+FormLayout=False
+OnlyNBSP=False
+LeftMargin=0
+TopMargin=0
+PageBreak=0
+AddSQL=False
+HandleTags=True
+
+[Styles]
+
+{Title}
+Enabled=True
+Name=Report Title
+Description=
+Style=
+HeaderStyle=
+Align=0
+Break=0
+Function=0
+Format=
+
+{Param}
+Enabled=True
+Name=Variables
+Description=
+Style=
+HeaderStyle=
+Align=0
+Break=0
+Function=0
+Format=
+
+{Table}
+Enabled=False
+Name=Tabular Tables
+Description=
+Style=
+HeaderStyle=
+Align=0
+Break=0
+Function=0
+Format=
+
+{Form}
+Enabled=False
+Name=Form Tables
+Description=
+Style=
+HeaderStyle=
+Align=0
+Break=0
+Function=0
+Format=
+
+{Field}
+Enabled=False
+Name=Default Field
+Description=
+Style=
+HeaderStyle=
+Align=0
+Break=0
+Function=0
+Format=
+
+{*}
+Enabled=True
+Name=ITEMID
+Description=
+Style=Custom...
+HeaderStyle=Blue Header
+Align=3
+Break=0
+Function=0
+Format=
+
+{*}
+Enabled=True
+Name=PRICE
+Description=
+Style=Custom...
+HeaderStyle=Blue Header
+Align=3
+Break=0
+Function=3
+Format=
+
+{*}
+Enabled=True
+Name=ORDERID
+Description=Order id
+Style=Custom...
+HeaderStyle=Blue Header
+Align=3
+Break=0
+Function=0
+Format=
+
+{*}
+Enabled=True
+Name=DONATED
+Description=
+Style=Custom...
+HeaderStyle=Blue Header
+Align=3
+Break=3
+Function=0
+Format=
+
+{*}
+Enabled=True
+Name=WAREHOUSEID
+Description=Warehouse id
+Style=Custom...
+HeaderStyle=Blue Header
+Align=3
+Break=0
+Function=0
+Format=
+
+{*}
+Enabled=True
+Name=STOREKEEPERORDONOR
+Description=Storekeeper or donor
+Style=Custom...
+HeaderStyle=Blue Header
+Align=3
+Break=0
+Function=0
+Format=
+
+
+
+[CSS]
+*4-PRICE
+{
+  Background: #FFE0E0;
+  Color: #400080;
+}
+
+*4-ORDERID
+{
+  Background: #FFE0E0;
+  Color: #400080;
+}
+
+*4-DONATED
+{
+  Background: #FFE0E0;
+  Color: #400080;
+}
+
+*4-WAREHOUSEID
+{
+  Background: #FFE0E0;
+  Color: #400080;
+}
+
+*4-STOREKEEPERORDONOR
+{
+  Background: #FFE0E0;
+  Color: #400080;
+}
+
+*4-ITEMID
+{
+  Background: #FFE0E0;
+  Color: #400080;
+}
+
+Blue Header
+{
+  Background: #400080;
+  Color: #FFE0E0;
+  Border-style: None;
+  Font-family: Arial;
+  Font-size: 9pt;
+  Font-weight: Bold;
+}
+
+

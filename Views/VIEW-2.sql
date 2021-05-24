@@ -41,7 +41,19 @@ FROM ITEMS
 WHERE StorekeeperOrDonor IS NOT NULL
 GROUP BY StorekeeperOrDonor
 HAVING COUNT(*) > 1;   
-                      
+
+/*
+UPDATE
+מפני שזו עמודה חדשה ולכן הוא לא יודע מה לעדכן.
+*/
+UPDATE ITEMS
+SET DONATED = 'NO KNOWLEFGE'
+WHERE DONATED = 'UNKNOWN';
+/*
+DELETE
+מפני שיש חיבור של כמה טבלאות אז הוא לא יודע מה למחוק
+*/ 
+ DELETE FROM ITEMS WHERE ITEMID =  2;                    
 /*DROP*/
 DROP VIEW ITEMS;
 

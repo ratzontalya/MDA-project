@@ -1,0 +1,160 @@
+PL/SQL Developer Report
+
+[SQL]
+SELECT EXTRACT(YEAR FROM CALLDATE), EXTRACT(MONTH FROM CALLDATE), COUNT(*) AS NUM_CALLS
+FROM CALLS
+GROUP BY EXTRACT(YEAR FROM CALLDATE),EXTRACT(MONTH FROM CALLDATE)
+ORDER BY EXTRACT(YEAR FROM CALLDATE),EXTRACT(MONTH FROM CALLDATE);
+
+[Options]
+Connect=False
+Username=
+Password=2343
+Database=
+ConnectAs=
+LockMode=0
+LockedPassword=2001
+BkgColor=-16777211
+BkgImage=
+FormLayout=False
+OnlyNBSP=False
+LeftMargin=0
+TopMargin=0
+PageBreak=0
+AddSQL=False
+HandleTags=True
+
+[Styles]
+
+{Title}
+Enabled=True
+Name=Report Title
+Description=
+Style=
+HeaderStyle=
+Align=0
+Break=0
+Function=0
+Format=
+
+{Param}
+Enabled=True
+Name=Variables
+Description=
+Style=Default Field Header
+HeaderStyle=
+Align=0
+Break=0
+Function=0
+Format=
+
+{Table}
+Enabled=False
+Name=Tabular Tables
+Description=
+Style=
+HeaderStyle=
+Align=0
+Break=0
+Function=0
+Format=
+
+{Form}
+Enabled=False
+Name=Form Tables
+Description=
+Style=
+HeaderStyle=
+Align=0
+Break=0
+Function=0
+Format=
+
+{Field}
+Enabled=False
+Name=Default Field
+Description=
+Style=
+HeaderStyle=
+Align=0
+Break=0
+Function=0
+Format=
+
+{*}
+Enabled=True
+Name=EXTRACT(YEARFROMCALLDATE)
+Description=Year
+Style=Custom...
+HeaderStyle=Blue Header
+Align=3
+Break=3
+Function=0
+Format=
+
+{*}
+Enabled=True
+Name=EXTRACT(MONTHFROMCALLDATE)
+Description=Month
+Style=Custom...
+HeaderStyle=Blue Header
+Align=3
+Break=0
+Function=0
+Format=
+
+{*}
+Enabled=True
+Name=NUM_CALLS
+Description=Number of calls
+Style=Custom...
+HeaderStyle=Blue Header
+Align=3
+Break=0
+Function=3
+Format=
+
+
+
+[CSS]
+**4-Variables
+{
+  Background: #FFE0E0;
+  Color: #FFE0E0;
+}
+
+*4-EXTRACT(MONTHFROMCALLDATE)
+{
+  Background: #FFE0E0;
+  Color: #400080;
+}
+
+*4-NUM_CALLS
+{
+  Background: #FFE0E0;
+  Color: #400080;
+}
+
+*4-EXTRACT(YEARFROMCALLDATE)
+{
+  Background: #FFE0E0;
+  Color: #400080;
+}
+
+Default Field Header
+{
+  Background: #E0E0E0;
+  Color: #000000;
+}
+
+Blue Header
+{
+  Background: #400080;
+  Color: #FFE0E0;
+  Border-style: None;
+  Font-family: Arial;
+  Font-size: 9pt;
+  Font-weight: Bold;
+}
+
+

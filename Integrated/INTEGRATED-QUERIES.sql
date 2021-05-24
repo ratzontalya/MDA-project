@@ -86,6 +86,7 @@ FROM (SELECT AmbulanceId,COUNT(*) AS counter, MIN(CallDate) AS FirstUse, MAX(Cal
 WHERE FirstUse > '01-JAN-1970';
 
 /*
+GOOD
    7
    Return all the paramedics' id which participated in more than 5 calls in the last 21 years.
 */
@@ -122,6 +123,7 @@ FROM (SELECT COUNT(DISTINCT DriverId) AS drivers
 /* UPDATE */
 
 /*
+GOOD
     Update the YEARSOFEXPERIENCE of excellent paramedics by adding 2 years
 */
 UPDATE PARAMEDIC
@@ -200,7 +202,7 @@ from item natural join ordering
 group by ORDERDATE, ORDERID, Itemid, ITEMNAME 
 HAVING count(*) >= 1;
 
---query 5
+--query 5 GOOD
 select DONORID 
 from donor natural join donation
 group by DONORID
@@ -236,7 +238,7 @@ set W.itemsCapacity = W.itemsCapacity * 2, W.storekeeperscapacity = W.storekeepe
 where W.ADDRESS = '838 Dennis';
 
 
---query 2
+--query 2 GOOD
 update ordering O 
 set O.Shippingprice = 0 
 where O.ORDERID IN (select orderid 

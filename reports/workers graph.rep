@@ -1,0 +1,106 @@
+PL/SQL Developer Report
+
+[SQL]
+SELECT 'drivers' AS type, drivers AS count
+FROM (SELECT COUNT(DISTINCT DriverId) AS drivers
+     FROM DRIVER)
+UNION
+SELECT 'paramedics' AS type,paramedics AS count
+FROM (SELECT COUNT(DISTINCT ParamedicId) AS paramedics
+     FROM PARAMEDIC)
+UNION
+SELECT 'dispatchers' AS type, dispatchers AS type
+FROM (SELECT COUNT(DISTINCT DispatcherId) AS dispatchers
+     FROM DISPATCHER)
+UNION
+SELECT 'volunteers' AS type, volunteers AS type
+FROM (SELECT COUNT(DISTINCT VolunteerId) AS volunteers
+     FROM VOLUNTEER)
+UNION
+SELECT 'storekeepers' AS type, storekeepers AS type
+FROM (SELECT COUNT(DISTINCT storekeeperid) AS storekeepers
+     FROM storekeeper)
+UNION
+SELECT 'donors' AS type, donors AS type
+FROM (SELECT COUNT(DISTINCT donorid) AS donors
+     FROM donor);
+
+[Options]
+Connect=False
+Username=
+Password=2082
+Database=
+ConnectAs=
+LockMode=0
+LockedPassword=2270
+BkgColor=-16777211
+BkgImage=
+FormLayout=False
+OnlyNBSP=False
+LeftMargin=0
+TopMargin=0
+PageBreak=0
+AddSQL=False
+HandleTags=True
+
+[Styles]
+
+{Title}
+Enabled=True
+Name=Report Title
+Description=
+Style=
+HeaderStyle=
+Align=0
+Break=0
+Function=0
+Format=
+
+{Param}
+Enabled=True
+Name=Variables
+Description=
+Style=
+HeaderStyle=
+Align=0
+Break=0
+Function=0
+Format=
+
+{Table}
+Enabled=True
+Name=Tabular Tables
+Description=
+Style=
+HeaderStyle=
+Align=0
+Break=0
+Function=0
+Format=
+
+{Form}
+Enabled=True
+Name=Form Tables
+Description=
+Style=
+HeaderStyle=
+Align=0
+Break=0
+Function=0
+Format=
+
+{Field}
+Enabled=True
+Name=Default Field
+Description=
+Style=
+HeaderStyle=
+Align=0
+Break=0
+Function=0
+Format=
+
+
+
+[CSS]
+

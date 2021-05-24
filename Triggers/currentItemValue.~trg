@@ -1,0 +1,19 @@
+create or replace trigger currentItemValue
+  before delete
+  on item 
+  for each row
+declare
+  -- local variables here
+  itemPrice integer := 0;
+  years integer:= 0;
+  itemPurchaseDate date;
+begin
+  select purchaseDate into itemPurchaseDate from itemValue where itemId = :new.itemid;
+  years := trunc(months_between(sysdate,itemPurchaseDate)/12);
+  if years != 0 then
+     itemPrice := :new.price * power(0.9,years);
+  end if;
+  delete from itemValue where itemId = :new.itemid;
+  dbms_output.put_line('The current price of the ' || :new.itemname || 'you just deleted was ' || to_char(itemPrice));
+end currentItemValue;
+/

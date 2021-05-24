@@ -86,6 +86,7 @@ FROM (SELECT AmbulanceId,COUNT(*) AS counter, MIN(CallDate) AS FirstUse, MAX(Cal
 WHERE FirstUse > '01-JAN-1970';
 
 /*
+GOOD
    7
    Return all the paramedics' id which participated in more than 5 calls in the last 21 years.
 */
@@ -122,6 +123,7 @@ FROM (SELECT COUNT(DISTINCT DriverId) AS drivers
 /* UPDATE */
 
 /*
+GOOD
     Update the YEARSOFEXPERIENCE of excellent paramedics by adding 2 years
 */
 UPDATE PARAMEDIC
